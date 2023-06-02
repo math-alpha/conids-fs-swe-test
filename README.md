@@ -32,3 +32,7 @@ cd mswebclient
 npm install
 npm run dev
 ```
+
+The backend is running on
+http://localhost:8000
+

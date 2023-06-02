@@ -4,6 +4,7 @@ services:
   db:
     image: postgres:12.0
     container_name: conids-db
+    restart: always
     environment:
       POSTGRES_DB: mspurchasing
       POSTGRES_USER: mspurchasing
@@ -22,7 +23,7 @@ services:
   mspurchasing:
     build: ./mspurchasing
     container_name: conids-backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c 'while !</dev/tcp/conids-db/5432; do sleep 1; done; python manage.py runserver 0.0.0.0:8000'
     volumes:
       - ./mspurchasing:/code
     ports:
@@ -34,8 +35,8 @@ services:
   mswebclient:
     build: ./mswebclient
     container_name: conids-frontend
-    command: npm run dev
+    command: npm run dev #sleep 1000 
     volumes:
       - ./mswebclient:/code
     ports:
-      - 8080:8080
+      - 5173:5173

@@ -1,8 +1,10 @@
-FROM node:lts
+FROM node:16.20.0
 
 WORKDIR /code
 
-COPY package*.json ./
-RUN npm install
-
 COPY . .
+
+COPY package*.json ./
+RUN cd /code && npm install
+
+EXPOSE 5173
