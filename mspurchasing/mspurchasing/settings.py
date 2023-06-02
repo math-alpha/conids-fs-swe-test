@@ -79,7 +79,7 @@ DATABASES = {
         "NAME": "mspurchasing",
         "USER": "mspurchasing",
         "PASSWORD": "mspurchasing",
-        "HOST": "db",
+        "HOST": "conids-db",
         "PORT": "5432",
     },
     'sqlite': {
