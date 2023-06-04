@@ -36,7 +36,7 @@ const selectedProductId = ref(null);
         </li>
       </ul>
 
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllPurchases">Remove All</button>
+      <button class="my-3 btn btn-sm btn-danger col-2" @click="removeAllPurchases">Remove All</button>
     </div>
     <div class="col-md-4">
       <div v-if="currentPurchase.id">
@@ -74,7 +74,7 @@ const selectedProductId = ref(null);
           {{ currentPurchase.status }}
         </div>
 
-        <button @click="editPurchase" class="badge badge-info"
+        <button @click="editPurchase" class="btn btn-primary col-8 mx-auto"
           >Edit
         </button>
       </div>
