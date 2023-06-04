@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { customRef, ref } from 'vue'
 import { useProductPurchaseStore } from '@/stores/product'
 
 const productStore = useProductPurchaseStore()
@@ -7,12 +6,11 @@ const products = productStore.products
 const representative = productStore.representative
 const priorities = productStore.priorities
 const vendors = productStore.vendors
-const selectedProductId = ref(null)
 </script>
 
 <template>
   <div v-if="currentPurchase.id" class="container col-md-8">
-    <h4>Purchase</h4>
+    <h4>Purchase Detail</h4>
     <form>
       <div class="flex-row row">
         <div class="col-6">
@@ -28,7 +26,7 @@ const selectedProductId = ref(null)
 
           <div class="form-group">
             <label for="description"><strong>Purchase Representative</strong></label>
-            <select :v-model="currentPurchase.purchase_representative" class="form-select d-block">
+            <select v-model="currentPurchase.purchase_representative" class="form-select d-block">
               <option v-for="(name, id) in representative" :key="id" :value="id">
                 {{ name }}
               </option>
@@ -37,7 +35,7 @@ const selectedProductId = ref(null)
 
           <div class="form-group">
             <label><strong>Product Reference</strong></label>
-            <select :v-model="currentPurchase.product_reference" class="form-select d-block">
+            <select v-model="currentPurchase.product_reference" class="form-select d-block">
               <option v-for="(name, id) in products" :key="id" :value="id">
                 {{ name }}
               </option>
@@ -46,7 +44,7 @@ const selectedProductId = ref(null)
 
           <div class="form-group">
             <label><strong>Priority</strong></label>
-            <select :v-model="currentPurchase.priority" class="form-select d-block">
+            <select v-model="currentPurchase.priority" class="form-select d-block">
               <option v-for="(name, id) in priorities" :key="id" :value="id">
                 {{ name }}
               </option>
@@ -55,7 +53,7 @@ const selectedProductId = ref(null)
 
           <div class="form-group">
             <label><strong>Vendor</strong></label>
-            <select :v-model="currentPurchase.vendor" class="form-select d-block">
+            <select v-model="currentPurchase.vendor" class="form-select d-block">
               <option v-for="(name, id) in vendors" :key="id" :value="id">
                 {{ name }}
               </option>
@@ -68,7 +66,7 @@ const selectedProductId = ref(null)
             <input
               v-model="currentPurchase.order_deadline"
               class="form-select"
-              type="datetime-local"
+              type="datetime"
             />
           </div>
 
@@ -80,6 +78,11 @@ const selectedProductId = ref(null)
           <div class="form-group">
             <label for="status"><strong>Status</strong></label>
             <input type="text" class="form-control" id="status" v-model="currentPurchase.status" />
+          </div>
+
+          <div class="form-group">
+            <label for="status"><strong>Source Document</strong></label>
+            <input type="text" class="form-control" id="status" v-model="currentPurchase.source_document" />
           </div>
 
           <div class="form-group">
@@ -147,6 +150,17 @@ export default defineComponent({
         })
     },
 
+    retrievePurchases() {
+      console.log("Retrieving Purchases data")
+      PurchaseDataService.getAll()
+        .then((response: ResponseData) => {
+          console.log(response.data)
+        })
+        .catch((e: Error) => {
+          console.log(e)
+        })
+    },
+
     deletePurchase() {
       PurchaseDataService.delete(this.currentPurchase.id)
         .then((response: ResponseData) => {
@@ -160,6 +174,7 @@ export default defineComponent({
   },
   mounted() {
     this.message = ''
+    this.retrievePurchases()
     this.getPurchase(this.$route.params.id)
   }
 })

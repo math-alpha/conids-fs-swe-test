@@ -38,7 +38,7 @@ class PurchaseDataService {
   }
 
   create(data: any): Promise<any> {
-    return apiClient.post("/purchases", data);
+    return apiClient.post("/purchases/", data);
   }
 
   update(id: any, data: any): Promise<any> {

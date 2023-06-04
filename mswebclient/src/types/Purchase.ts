@@ -1,5 +1,5 @@
 export default interface Purchase {
-  id:                      number;
+  id?:                      number;
   order_reference:         string;
   order_deadline:          Date;
   activities:              string;

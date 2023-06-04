@@ -32,7 +32,7 @@ const selectedProductId = ref(null);
           :key="index"
           @click="setActivePurchase(purchase, index); selectedProductId = index"
         >
-          {{ purchase.order_reference }}
+          {{ purchase.order_reference + "-" + purchase.product_reference }}
         </li>
       </ul>
 
@@ -68,6 +68,10 @@ const selectedProductId = ref(null);
         <div>
           <label><strong>Total:</strong></label>
           {{ currentPurchase.total }}
+        </div>
+        <div>
+          <label><strong>Source Document:</strong></label>
+          {{ currentPurchase.source_document }}
         </div>
         <div>
           <label><strong>Status:</strong></label>
