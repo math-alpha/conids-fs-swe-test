@@ -1,3 +1,3 @@
 export default interface ProductTag {
-  [x: string]: string
+  [id: number]: string
 }

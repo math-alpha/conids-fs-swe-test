@@ -20,8 +20,8 @@ const router = createRouter({
       component: () => import("@/components/PurchasesList.vue"),
     },
     {
-      path: "/purchases/:id",
-      name: "purchases-details",
+      path: "/purchase/:id",
+      name: "purchase-details",
       component: () => import("@/components/PurchaseDetails.vue"),
     },
     {
