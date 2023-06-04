@@ -4,15 +4,27 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 class ProductType(models.Model):
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 class Priority(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 class Responsible(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255, default='OdooBot')
+
+    def __str__(self):
+        return self.name
 
 class Vendor(models.Model):
     name = models.CharField(max_length=255)
@@ -25,16 +37,8 @@ class Vendor(models.Model):
     state = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
 
-class PurchaseOrder(models.Model):
-    priority = models.ForeignKey(Priority, on_delete=models.CASCADE)
-    order_reference = models.CharField(max_length=255)
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-    purchase_representative = models.ForeignKey(Responsible, on_delete=models.CASCADE)
-    order_deadline = models.DateTimeField()
-    activities = models.TextField()
-    source_document = models.TextField()
-    total = models.FloatField()
-    status = models.CharField(max_length=255)
+    def __str__(self):
+        return self.name
 
 class Product(models.Model):
     favorite = models.BooleanField(default=False)
@@ -49,3 +53,21 @@ class Product(models.Model):
     quantity_on_hand = models.IntegerField()
     forecasted_quantity = models.IntegerField()
     activity_exception_decoration = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+class PurchaseOrder(models.Model):
+    priority = models.ForeignKey(Priority, on_delete=models.CASCADE)
+    order_reference = models.CharField(max_length=255)
+    product_reference = models.ForeignKey(Product, on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    purchase_representative = models.ForeignKey(Responsible, on_delete=models.CASCADE)
+    order_deadline = models.DateTimeField()
+    activities = models.TextField()
+    source_document = models.TextField()
+    total = models.FloatField()
+    status = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.order_reference

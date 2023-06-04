@@ -1,0 +1,15 @@
+image: atlassian/default-image:2
+
+pipelines:
+  default:
+    - step:
+        name: Deploy to Google App Engine
+        script:
+          - pipe: atlassian/google-app-engine-deploy:0.7.1
+            variables:
+              KEY_FILE: $KEY_FILE
+              PROJECT: "google-cloud-project-id"
+              VERSION: "1" 
+              PROMOTE: "true"
+              CONFIG: "./mspurchansing/app.yaml"
+              APP_DIR: "./mspurchansing"  

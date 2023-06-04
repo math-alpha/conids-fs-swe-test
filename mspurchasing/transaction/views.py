@@ -1,31 +1,80 @@
-from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+
 from .models import Vendor, PurchaseOrder, Product, Category, ProductType, Priority, Responsible
 from .serializers import VendorSerializer, PurchaseOrderSerializer, ProductSerializer, CategorySerializer, ProductTypeSerializer, PrioritySerializer, ResponsibleSerializer
 
-class VendorViewSet(viewsets.ModelViewSet):
-    queryset = Vendor.objects.all()
-    serializer_class = VendorSerializer
+class VendorAPIView(APIView):
+    def get(self, request):
+        queryset = Vendor.objects.all()
+        serializer = VendorSerializer(queryset, many=True)
+        return Response(serializer.data)
 
-class PurchaseOrderViewSet(viewsets.ModelViewSet):
-    queryset = PurchaseOrder.objects.all()
-    serializer_class = PurchaseOrderSerializer
+class PurchaseOrderAPIView(APIView):
+    def get(self, request):
+        queryset = PurchaseOrder.objects.all()
+        serializer = PurchaseOrderSerializer(queryset, many=True)
+        return Response(serializer.data)
 
-class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    def post(self, request):
+        serializer = PurchaseOrderSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+class PurchaseOrderDetailAPIView(APIView):
+    def get_object(self, pk):
+        try:
+            return PurchaseOrder.objects.get(pk=pk)
+        except PurchaseOrder.DoesNotExist:
+            raise Http404
 
-class ProductTypeViewSet(viewsets.ModelViewSet):
-    queryset = ProductType.objects.all()
-    serializer_class = ProductTypeSerializer
+    def get(self, request, pk, format=None):
+        purchase_order = self.get_object(pk)
+        serializer = PurchaseOrderSerializer(purchase_order)
+        return Response(serializer.data)
 
-class PriorityViewSet(viewsets.ModelViewSet):
-    queryset = Priority.objects.all()
-    serializer_class = PrioritySerializer
+    def put(self, request, pk, format=None):
+        purchase_order = self.get_object(pk)
+        serializer = PurchaseOrderSerializer(purchase_order, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ResponsibleViewSet(viewsets.ModelViewSet):
-    queryset = Responsible.objects.all()
-    serializer_class = ResponsibleSerializer
+    def delete(self, request, pk, format=None):
+        purchase_order = self.get_object(pk)
+        purchase_order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ProductAPIView(APIView):
+    def get(self, request):
+        queryset = Product.objects.all()
+        serializer = ProductSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class CategoryAPIView(APIView):
+    def get(self, request):
+        queryset = Category.objects.all()
+        serializer = CategorySerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class ProductTypeAPIView(APIView):
+    def get(self, request):
+        queryset = ProductType.objects.all()
+        serializer = ProductTypeSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class PriorityAPIView(APIView):
+    def get(self, request):
+        queryset = Priority.objects.all()
+        serializer = PrioritySerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class ResponsibleAPIView(APIView):
+    def get(self, request):
+        queryset = Responsible.objects.all()
+        serializer = ResponsibleSerializer(queryset, many=True)
+        return Response(serializer.data)
