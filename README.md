@@ -36,3 +36,4 @@ npm run dev
 The backend is running on
 http://localhost:8000
 
+![Purchases List Page](docs/purchases-list.png)
